@@ -35,3 +35,14 @@
 //     }
 //   }
 // }
+// declare global {
+//   namespace Cypress {
+//     interface Chainable {
+//       /**
+//        * Custom command to wait for React to be loaded on the page.
+//        * @example cy.waitForReact()
+//        */
+//       waitForReact(timeout?: number): Chainable<void>
+//     }
+//   }
+// }

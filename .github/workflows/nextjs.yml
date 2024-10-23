@@ -1,0 +1,69 @@
+# .github/workflows/nextjs.yml
+
+name: Next.js CI/CD Pipeline
+
+# Trigger deployment on push to main and pull requests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Set environment variables 
+env:
+  NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: |
+          npm ci
+          npm install -g jest
+
+      # Step 4: Lint check
+      - name: Run Lint
+        run: npm run lint
+
+      # Step 5: Type check
+      - name: Type Check
+        run: npm run type-check || true  # Make this mandatory by removing '|| true'
+
+      # Step 6: Run tests
+      - name: Run Tests
+        run: npm test || true  # Make this mandatory by removing '|| true'
+
+      # Step 7: Build application
+      - name: Build Next.js App
+        run: npm run build
+
+      # Step 8: Run E2E tests (if you have them)
+      - name: Run E2E Tests
+        run: npm run e2e || true  # Make this mandatory by removing '|| true'
+
+      # Step 9: Deploy to production (example using Vercel)
+      - name: Deploy to Vercel
+        if: github.ref == 'refs/heads/main' # Only deploy on main branch
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npm install --global vercel
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

@@ -13,13 +13,18 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.675.0",
+    "@aws-sdk/lib-dynamodb": "^3.675.0",
+    "@types/uuid": "^10.0.0",
+    "aws-sdk": "^2.1691.0",
     "firebase": "^10.14.1",
     "mongoose": "^8.7.1",
     "next": "^14.2.15",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "style-loader": "^4.0.0",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.5.0",

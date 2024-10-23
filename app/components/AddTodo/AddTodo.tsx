@@ -53,6 +53,7 @@ export const AddTodo: React.FC<AddTodoProps> = ({ onAdd }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Input
+        id="new-todo"
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}

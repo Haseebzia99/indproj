@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import React from "react";
 
 interface Todo {
   id: string;
@@ -20,7 +21,8 @@ const StyledTodoItem = styled.li`
   margin-bottom: 1rem;
   transition: all 0.3s ease;
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
   }
@@ -33,7 +35,7 @@ const TodoText = styled.span`
 `;
 
 const DeleteButton = styled.button`
-  background-color: #ff4757;
+  background-color: #d63031;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -41,16 +43,32 @@ const DeleteButton = styled.button`
   cursor: pointer;
   transition: background-color 0.3s ease;
 
-  &:hover {
-    background-color: #ff6b6b;
+  &:hover,
+  &:focus {
+    background-color: #ff4757;
+    outline: 2px solid #0984e3;
+    outline-offset: 2px;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
   }
 `;
 
 export const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete }) => {
+  const handleDelete = () => {
+    onDelete(todo.id);
+  };
+
   return (
     <StyledTodoItem>
       <TodoText>{todo.text}</TodoText>
-      <DeleteButton onClick={() => onDelete(todo.id)}>Delete</DeleteButton>
+      <DeleteButton
+        onClick={handleDelete}
+        aria-label={`Delete todo: ${todo.text}`}
+      >
+        Delete
+      </DeleteButton>
     </StyledTodoItem>
   );
 };

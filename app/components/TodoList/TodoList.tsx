@@ -38,9 +38,9 @@ export const TodoList: React.FC<TodoListProps> = ({
   onDeleteTodo,
 }) => {
   return (
-    <TodoListContainer>
+    <TodoListContainer role="region" aria-label="Todo List">
       <Title>Todo List</Title>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {error && <ErrorMessage role="alert">{error}</ErrorMessage>}
       <AddTodo onAdd={onAddTodo} />
       <ul>
         {todos.map((todo) => (

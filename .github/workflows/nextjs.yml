@@ -12,10 +12,9 @@ jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Needed for deployment
+      contents: write
 
     steps:
-      # Setup steps
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -28,24 +27,23 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      # Test steps
       - name: Run Lint
         run: npm run lint
 
       - name: Run Unit Tests
         run: npm run test
 
-      # Build step
+      # Build step (will create the out directory automatically)
       - name: Build Next.js App
         run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: "/${{ github.event.repository.name }}"
 
-      # Add additional build steps for static export
-      - name: Static HTML Export
-        run: npm run export || npm run build -- -o out
+      # Configure for GitHub Pages
+      - name: Add .nojekyll file
+        run: touch ./out/.nojekyll
 
-      # Deploy step
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@v4

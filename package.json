@@ -10,7 +10,8 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "export": "next export"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.675.0",

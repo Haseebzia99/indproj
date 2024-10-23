@@ -1,3 +1,5 @@
+# .github/workflows/nextjs.yml
+
 name: Next.js CI/CD Pipeline
 
 on:
@@ -6,77 +8,47 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed for deployment
 
     steps:
-      # Step 1: Check out repository
+      # Setup steps
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: "npm"
 
-      # Step 3: Install dependencies
       - name: Install Dependencies
-        run: |
-          npm ci
-          npm install -g jest
+        run: npm ci
 
-      # Step 4: Lint check
+      # Test steps
       - name: Run Lint
         run: npm run lint
 
-      # Step 5: Run tests
       - name: Run Unit Tests
         run: npm run test
 
-      # Step 6: Build application
+      # Build step
       - name: Build Next.js App
         run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: "/${{ github.event.repository.name }}"
 
-      # Step 7: Deploy to Vercel (Production)
-      - name: Deploy to Vercel (Production)
+      # Add additional build steps for static export
+      - name: Static HTML Export
+        run: npm run export || npm run build -- -o out
+
+      # Deploy step
+      - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
-        uses: BetaHuhn/deploy-to-vercel-action@v1
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          PRODUCTION: true
-
-      # Step 8: Deploy to Vercel (Preview)
-      - name: Deploy to Vercel (Preview)
-        if: github.event_name == 'pull_request'
-        uses: BetaHuhn/deploy-to-vercel-action@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          PRODUCTION: false
-
-      # Step 9: Comment Preview URL
-      - name: Comment Preview URL
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { issue: { number: issue_number }, repo: { owner, repo } } = context;
-            github.rest.issues.createComment({
-              issue_number,
-              owner,
-              repo,
-              body: '🚀 Preview deployment is ready! You can view it at: ${{ steps.deploy-preview.outputs.PREVIEW_URL }}'
-            });
+          folder: out
+          clean: true

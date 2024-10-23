@@ -39,23 +39,15 @@ jobs:
       - name: Run Lint
         run: npm run lint
 
-      # Step 5: Type check
-      - name: Type Check
-        run: npm run type-check || true  # Make this mandatory by removing '|| true'
-
       # Step 6: Run tests
-      - name: Run Tests
-        run: npm test || true  # Make this mandatory by removing '|| true'
+      - name: Run Unit Tests
+        run: npm run test
 
       # Step 7: Build application
       - name: Build Next.js App
         run: npm run build
 
-      # Step 8: Run E2E tests (if you have them)
-      - name: Run E2E Tests
-        run: npm run e2e || true  # Make this mandatory by removing '|| true'
-
-      # Step 9: Deploy to production (example using Vercel)
+      # Step 8: Deploy to production (example using Vercel)
       - name: Deploy to Vercel
         if: github.ref == 'refs/heads/main' # Only deploy on main branch
         env:

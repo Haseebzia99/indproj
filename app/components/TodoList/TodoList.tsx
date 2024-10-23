@@ -39,7 +39,7 @@ export const TodoList: React.FC<TodoListProps> = ({
 }) => {
   return (
     <TodoListContainer role="region" aria-label="Todo List">
-      <Title>Tod List</Title>
+      <Title>Todo List</Title>
       {error && <ErrorMessage role="alert">{error}</ErrorMessage>}
       <AddTodo onAdd={onAddTodo} />
       <ul>

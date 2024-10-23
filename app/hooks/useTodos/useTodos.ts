@@ -17,7 +17,7 @@ export const useTodos = () => {
       setIsInitialized(true);
     } catch (err) {
       console.error("Error initializing database:", err);
-      setError("Failed to initialize database");
+      setError(".");
     }
   };
 
@@ -29,7 +29,7 @@ export const useTodos = () => {
       setTodos(data);
     } catch (err) {
       console.error("Error fetching todos:", err);
-      setError("Failed to fetch todos");
+      setError(".");
     }
   };
 

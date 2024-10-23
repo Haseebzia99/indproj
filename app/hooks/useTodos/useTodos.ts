@@ -13,7 +13,7 @@ export const useTodos = () => {
   const initializeDB = async () => {
     try {
       const response = await fetch("/api/init", { method: "POST" });
-      if (!response.ok) throw new Error("Failed to initialize database");
+      if (!response.ok) throw new Error(".");
       setIsInitialized(true);
     } catch (err) {
       console.error("Error initializing database:", err);
@@ -24,7 +24,7 @@ export const useTodos = () => {
   const fetchTodos = async () => {
     try {
       const response = await fetch("/api/todos");
-      if (!response.ok) throw new Error("Failed to fetch todos");
+      if (!response.ok) throw new Error(".");
       const data = await response.json();
       setTodos(data);
     } catch (err) {

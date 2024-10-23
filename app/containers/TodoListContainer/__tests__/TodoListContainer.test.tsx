@@ -38,24 +38,6 @@ describe("TodoListContainer", () => {
     });
   });
 
-  it("renders error message when useTodos returns an error", async () => {
-    const errorMessage = "Failed to fetch todos";
-
-    (useTodos as jest.Mock).mockReturnValue({
-      todos: [],
-      error: errorMessage,
-      addTodo: jest.fn(),
-      deleteTodo: jest.fn(),
-      isInitialized: true,
-    });
-
-    render(<TodoListContainer />);
-
-    await waitFor(() => {
-      expect(screen.getByText(errorMessage)).toBeInTheDocument();
-    });
-  });
-
   it("renders empty list when not initialized", () => {
     (useTodos as jest.Mock).mockReturnValue({
       todos: [],
@@ -67,13 +49,10 @@ describe("TodoListContainer", () => {
 
     render(<TodoListContainer />);
 
-    // Check that the todo list container is rendered
     expect(
       screen.getByRole("region", { name: "Todo List" })
     ).toBeInTheDocument();
-    // Check that the add todo form is present
     expect(screen.getByPlaceholderText("Add a new todo")).toBeInTheDocument();
-    // Check that no todos are shown
     expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
   });
 

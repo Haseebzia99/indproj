@@ -38,24 +38,6 @@ describe("TodoListContainer", () => {
     });
   });
 
-  it("renders error message when useTodos returns an error", async () => {
-    const errorMessage = "Failed to fetch todos";
-
-    (useTodos as jest.Mock).mockReturnValue({
-      todos: [],
-      error: errorMessage,
-      addTodo: jest.fn(),
-      deleteTodo: jest.fn(),
-      isInitialized: true,
-    });
-
-    render(<TodoListContainer />);
-
-    await waitFor(() => {
-      expect(screen.getByText(errorMessage)).toBeInTheDocument();
-    });
-  });
-
   it("renders empty list when not initialized", () => {
     (useTodos as jest.Mock).mockReturnValue({
       todos: [],

@@ -30,7 +30,7 @@ const StyledTodoItem = styled.li`
 
 const TodoText = styled.span`
   flex-grow: 1;
-  font-size: 1rem;
+  font-size: 2rem;
   color: #333;
 `;
 

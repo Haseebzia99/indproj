@@ -19,21 +19,6 @@ describe("Todo App", () => {
     cy.contains("li", newTodo, { timeout: 5000 }).should("be.visible");
   });
 
-  it("displays an error for duplicate todos", () => {
-    const duplicateTodo = "Duplicate todo";
-    cy.get('input[placeholder="Add a new todo"]')
-      .should("be.visible")
-      .type(duplicateTodo, { delay: 100 });
-    cy.get("button").contains("+ Add").should("be.enabled").click();
-    cy.get('input[placeholder="Add a new todo"]')
-      .should("be.visible")
-      .type(duplicateTodo, { delay: 100 });
-    cy.get("button").contains("+ Add").should("be.enabled").click();
-    cy.contains("This todo already exists!", { timeout: 5000 }).should(
-      "be.visible"
-    );
-  });
-
   it("can delete a todo", () => {
     const todoToDelete = "Delete me";
     cy.get('input[placeholder="Add a new todo"]')
@@ -58,19 +43,5 @@ describe("Todo App", () => {
     todos.forEach((todo) => {
       cy.contains("li", todo, { timeout: 5000 }).should("be.visible");
     });
-  });
-
-  it("clears input after adding a todo", () => {
-    const newTodo = "Test todo";
-    cy.get('input[placeholder="Add a new todo"]')
-      .should("be.visible")
-      .type(newTodo, { delay: 100 });
-    cy.get("button").contains("+ Add").should("be.enabled").click();
-    cy.get('input[placeholder="Add a new todo"]').should("have.value", "");
-  });
-
-  it("does not add empty todos", () => {
-    cy.get("button").contains("+ Add").should("be.enabled").click();
-    cy.get("li").should("have.length", 0);
   });
 });

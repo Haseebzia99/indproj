@@ -52,7 +52,6 @@ export default async function handler(
   } catch (error) {
     const dynamoError = error as DynamoDBError;
 
-    // If table already exists, that's fine
     if (dynamoError.name === "ResourceInUseException") {
       return res.status(200).json({ message: "Table already exists" });
     }

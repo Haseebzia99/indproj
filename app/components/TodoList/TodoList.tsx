@@ -14,7 +14,7 @@ const TodoListContainer = styled.div`
 
 const Title = styled.h1`
   font-size: 2rem;
-  color: blue;
+  color: red;
   margin-bottom: 2rem;
   text-align: center;
 `;
